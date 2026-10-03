@@ -53,7 +53,7 @@ That's the basic idea.
 
 ## Why do we need OOP?
 
-Imagine your JobTrack project eventually has **1,000 users**.
+Imagine your project eventually has **1,000 users**.
 
 Without a good structure, you might end up with many separate variables:
 
@@ -168,7 +168,7 @@ For example, JavaScript has:
 
 ```
 class BankAccount {
-    
+
 }
 ```
 
@@ -199,3 +199,201 @@ And **`this` and prototypes are especially important in JavaScript OOP**.
 
 - **OOP is a programming style that organizes code around objects.**
 - **Class = blueprint; Object = actual instance created from that blueprint.**
+
+---
+
+## What is an API?
+
+**API** stands for **Application Programming Interface**.
+
+In simple terms:
+
+> An API is a way for **one program to communicate with another program**.
+
+Think of it like a **waiter in a restaurant**:
+
+```
+You                Waiter/API              Kitchen/Server
+ │                     │                       │
+ │  "Give me pizza"    │                       │
+ │────────────────────>│                       │
+ │                     │  Request              │
+ │                     │──────────────────────>│
+ │                     │                       │
+ │                     │      Pizza            │
+ │                     │<──────────────────────│
+ │      Pizza          │                       │
+ │<────────────────────│                       │
+```
+
+You don't go into the kitchen yourself.
+
+You tell the **waiter** what you want, and the waiter communicates with the kitchen.
+
+An API works similarly.
+
+---
+
+### In JavaScript
+
+Imagine your website needs a list of jobs from a server.
+
+Your JavaScript sends a **request**:
+
+```
+JavaScript
+    ↓
+   API
+    ↓
+Server / Database
+```
+
+The server processes the request and sends back a **response**:
+
+```
+Server / Database
+    ↓
+   API
+    ↓
+JavaScript
+```
+
+The response is often in **JSON**:
+
+```
+[
+  {
+    "company": "Google",
+    "position": "Frontend Developer"
+  },
+  {
+    "company": "Microsoft",
+    "position": "JavaScript Developer"
+  }
+]
+```
+
+Your JavaScript can then use that data to update the DOM.
+
+---
+
+## API ≠ Database
+
+This is an important distinction.
+
+```
+Your JavaScript
+      ↓
+     API
+      ↓
+   Backend
+      ↓
+   Database
+```
+
+Your JavaScript usually **doesn't directly talk to the database**.
+
+The API provides a controlled way for your application to communicate with the backend.
+
+---
+
+## The two important ideas
+
+When working with APIs, you'll frequently hear:
+
+### Request
+
+What your application **asks for**.
+
+For example:
+
+```
+GET /jobs
+```
+
+Meaning:
+
+> "Give me the jobs."
+
+### Response
+
+What the server **sends back**.
+
+For example:
+
+```
+[
+  {
+    "id": 1,
+    "company": "Google"
+  }
+]
+```
+
+---
+
+## How JavaScript communicates with an API
+
+JavaScript commonly uses `fetch()`:
+
+```
+fetch()
+   ↓
+HTTP Request
+   ↓
+API
+   ↓
+HTTP Response
+   ↓
+JSON data
+   ↓
+JavaScript
+```
+
+You'll learn `fetch()` next, because it's one of the most important tools for working with APIs in JavaScript.
+
+### Key Takeaway
+
+- **API = a communication interface between programs.**
+- **Request → API → Server → Response** is the basic cycle.
+
+so i can say api is the code outside the objectS?
+
+Not quite. You're mixing two different ideas.
+
+An **API is not simply code outside objects**.
+
+Think of an API as a **defined way to interact with something**.
+
+For example, JavaScript itself provides APIs:
+
+```
+document.querySelector(".btn");
+```
+
+Here, `document` provides an API for interacting with the DOM.
+
+And when you use a web API:
+
+```
+Your JavaScript
+      ↓
+     API
+      ↓
+External server
+```
+
+The API defines **how you can ask the server for data and what kind of response you'll get**.
+
+### A useful definition for your notes
+
+> **API = a set of rules and methods that allows one piece of software to communicate with and use another piece of software.**
+
+One question for you:
+
+If `fetch()` allows your JavaScript to communicate with a server, **what do you think `fetch()` is doing in that communication?**
+
+### Key Takeaway
+
+- ❌ API ≠ code outside objects.
+- ✅ API = a defined interface for communicating with or using another system.
