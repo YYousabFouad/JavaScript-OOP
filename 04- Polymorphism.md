@@ -1,0 +1,90 @@
+
+**Polymorphism** means:
+
+> **“One interface, different behaviors.”**
+
+The word comes from:
+
+- **Poly** = many
+- **Morph** = forms
+
+In OOP, polymorphism means that **different objects can respond to the same method in different ways**.
+
+### Simple example
+
+Imagine we have a `Animal` class:
+
+```
+class Animal {
+  speak() {
+    console.log("The animal makes a sound");
+  }
+}
+```
+
+Now different animals can have their own version of `speak()`:
+
+```
+class Dog extends Animal {
+  speak() {
+    console.log("Woof!");
+  }
+}
+
+class Cat extends Animal {
+  speak() {
+    console.log("Meow!");
+  }
+}
+```
+
+Now:
+
+```
+const dog = new Dog();
+const cat = new Cat();
+
+dog.speak(); // Woof!
+cat.speak(); // Meow!
+```
+
+Notice something important:
+
+Both objects use the **same method name**:
+
+```
+speak()
+```
+
+But they produce **different behavior**.
+
+That's polymorphism.
+
+### The important idea
+
+You don't need to care about the exact type of object when calling the method:
+
+```
+animal.speak();
+```
+
+The object itself determines **which version of `speak()` runs**.
+
+So you can think of it like:
+
+```
+             speak()
+                │
+       ┌────────┴────────┐
+       ↓                 ↓
+      Dog               Cat
+       │                 │
+    "Woof!"            "Meow!"
+```
+
+This is one of the main benefits of polymorphism: **you can write code that works with different objects through a common interface.**
+
+### Key Takeaway
+
+- **Polymorphism = same interface/method, different behavior.**
+- In JavaScript, inheritance + method overriding is a common way to achieve polymorphism.
