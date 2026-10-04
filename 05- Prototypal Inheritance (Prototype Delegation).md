@@ -1,3 +1,4 @@
+# Prototypal Inheritance (Prototype Delegation)
 
 The easiest way to understand it is:
 
@@ -5,11 +6,11 @@ The easiest way to understand it is:
 
 That other object is called its **prototype**.
 
-### 1. The basic idea
+## 1. The Basic Idea
 
 Imagine:
 
-```
+```text
 object A
    ↓
 prototype object B
@@ -31,9 +32,9 @@ This is called the **prototype chain**.
 
 ---
 
-### 2. A simple example
+## 2. A Simple Example
 
-```
+```javascript
 const user = {
   name: "John"
 };
@@ -45,7 +46,7 @@ admin.role = "admin";
 
 Here:
 
-```
+```text
 admin
  ├── role: "admin"
  │
@@ -56,7 +57,7 @@ user
 
 Now:
 
-```
+```javascript
 admin.role
 ```
 
@@ -64,7 +65,7 @@ JavaScript finds `role` directly inside `admin`.
 
 But:
 
-```
+```javascript
 admin.name
 ```
 
@@ -72,7 +73,7 @@ There is no `name` inside `admin`.
 
 So JavaScript **delegates the lookup** to its prototype:
 
-```
+```text
 admin → user
 ```
 
@@ -80,25 +81,25 @@ It finds `name` in `user`.
 
 So:
 
-```
+```javascript
 console.log(admin.name);
 ```
 
 gets:
 
-```
+```text
 "John"
 ```
 
 ---
 
-### 3. Important: the property wasn't copied
+## 3. Important: The Property Wasn't Copied
 
 This is one of the most important things to understand.
 
 When we do:
 
-```
+```javascript
 const admin = Object.create(user);
 ```
 
@@ -106,7 +107,7 @@ JavaScript does **not** copy `user.name` into `admin`.
 
 Instead:
 
-```
+```text
 admin
   ↓
 user
@@ -122,11 +123,11 @@ That's why **delegation** is another useful name for this behavior.
 
 ---
 
-### 4. What happens when you change the prototype?
+## 4. What Happens When You Change the Prototype?
 
 Suppose:
 
-```
+```javascript
 const user = {
   name: "John"
 };
@@ -136,19 +137,19 @@ const admin = Object.create(user);
 
 Then:
 
-```
+```javascript
 user.name = "Mike";
 ```
 
 Now:
 
-```
+```javascript
 admin.name
 ```
 
 will give:
 
-```
+```text
 "Mike"
 ```
 
@@ -160,11 +161,11 @@ It isn't holding a copied version of `name`.
 
 ---
 
-### 5. What if the child has the same property?
+## 5. What If the Child Has the Same Property?
 
 This is called **property shadowing**.
 
-```
+```javascript
 const user = {
   name: "John"
 };
@@ -176,19 +177,20 @@ admin.name = "Mike";
 
 Now:
 
-```
+```javascript
 admin.name
 ```
 
 returns:
 
-```
+```text
 "Mike"
 ```
 
-JavaScript finds `name` immediately on `admin`, so it doesn't need to look at the prototype.
+JavaScript finds `name` immediately on `admin`, so it doesn't need to look at
+the prototype.
 
-```
+```text
 admin
  ├── name: "Mike"   ← found here
  │
@@ -201,15 +203,16 @@ The `user.name` is **shadowed** by `admin.name`.
 
 ---
 
-## 6. Why is this useful for methods?
+## 6. Why Is This Useful for Methods?
 
 Imagine several objects need the same method.
 
-Instead of putting a separate copy of the method on every object, they can delegate to a shared prototype.
+Instead of putting a separate copy of the method on every object, they can
+delegate to a shared prototype.
 
 Conceptually:
 
-```
+```text
 user1 ──┐
         │
 user2 ──┼──→ User prototype
@@ -219,7 +222,7 @@ user3 ──┘
 
 When:
 
-```
+```javascript
 user1.greet()
 ```
 
@@ -227,7 +230,7 @@ JavaScript looks for `greet`.
 
 If `user1` doesn't have it:
 
-```
+```text
 user1
   ↓
 User prototype
@@ -241,11 +244,11 @@ This is one of the major reasons prototypes are important in JavaScript.
 
 ---
 
-## 7. How this connects to `class`
+## 7. How This Connects to `class`
 
 When you write:
 
-```
+```javascript
 class User {
   greet() {
     console.log("Hello");
@@ -259,7 +262,7 @@ But JavaScript actually uses prototypes behind the scenes.
 
 Conceptually:
 
-```
+```text
 user1 ──┐
         │
 user2 ──┼──→ User.prototype
@@ -270,7 +273,7 @@ user3 ──┘         ↓
 
 So:
 
-```
+```javascript
 user1.greet();
 ```
 
@@ -280,13 +283,13 @@ This is why **JavaScript classes are built on top of the prototype system**.
 
 ---
 
-## 8. Prototype inheritance vs classical inheritance
+## 8. Prototypal Inheritance vs Classical Inheritance
 
 This distinction is useful.
 
 In languages such as Java/C++ you commonly think:
 
-```
+```text
 Dog
  ↓
 Animal
@@ -296,7 +299,7 @@ where a class inherits from another class.
 
 JavaScript's underlying mechanism is different:
 
-```
+```text
 dog object
    ↓
 animal object
@@ -308,14 +311,17 @@ That's **prototypal inheritance**.
 
 So a good mental model is:
 
-> **JavaScript inheritance is fundamentally object-to-object delegation through the prototype chain.**
+> **JavaScript inheritance is fundamentally object-to-object delegation through
+> the prototype chain.**
 
 `class` gives us a more familiar syntax for working with that system.
 
 ---
 
-### Key Takeaway
+## Key Takeaway
 
-- **Prototype delegation:** if an object doesn't have a property/method, JavaScript looks for it in its prototype.
-- **Prototype chain:** the path JavaScript follows while searching for that property/method.
+- **Prototype delegation:** if an object doesn't have a property/method,
+  JavaScript looks for it in its prototype.
+- **Prototype chain:** the path JavaScript follows while searching for that
+  property/method.
 - `class` in JavaScript is built on top of this prototype mechanism.

@@ -1,11 +1,13 @@
+# Encapsulation
 
 **Encapsulation** means:
 
-> **Keeping an object's data and the methods that work with that data together, while controlling how that data can be accessed or changed.**
+> **Keeping an object's data and the methods that work with that data together,
+> while controlling how that data can be accessed or changed.**
 
 Think of an object as a **box**:
 
-```
+```text
 ┌─────────────────────────┐
 │        Object           │
 │                         │
@@ -19,13 +21,14 @@ Think of an object as a **box**:
 └─────────────────────────┘
 ```
 
-The important idea is that the object can decide **what outside code is allowed to do with its data**.
+The important idea is that the object can decide **what outside code is
+allowed to do with its data**.
 
-### Without encapsulation
+## Without Encapsulation
 
 Imagine:
 
-```
+```javascript
 const account = {
   balance: 1000
 };
@@ -35,11 +38,11 @@ account.balance = -5000;
 
 Nothing prevents outside code from directly changing `balance`.
 
-### With encapsulation
+## With Encapsulation
 
 A class can make a property **private** using `#`:
 
-```
+```javascript
 class Account {
   #balance = 1000;
 
@@ -55,7 +58,7 @@ class Account {
 
 Now:
 
-```
+```javascript
 const account = new Account();
 
 account.deposit(500);
@@ -65,19 +68,19 @@ console.log(account.getBalance());
 
 Outside code **cannot directly access**:
 
-```
+```javascript
 account.#balance; // ❌
 ```
 
 Instead, it interacts with the object through its methods.
 
-### The key idea
+## The Key Idea
 
 Encapsulation is **not simply "making properties private."**
 
 It is about creating a controlled boundary:
 
-```
+```text
 Outside code
      │
      │ allowed interaction
@@ -93,7 +96,7 @@ Outside code
 
 So when you see:
 
-```
+```javascript
 class User {
   #password;
 
@@ -105,9 +108,12 @@ class User {
 
 The idea is:
 
-> "The object owns and controls its internal data. Other code should interact with it through the interface I provide."
+> "The object owns and controls its internal data. Other code should interact
+> with it through the interface I provide."
 
-### Key Takeaway
+## Key Takeaway
 
-- **Encapsulation = protecting an object's internal state and controlling how outside code interacts with it.**
-- JavaScript supports this with mechanisms such as **private fields (`#`)**, methods, and controlled interfaces.
+- **Encapsulation = protecting an object's internal state and controlling how
+  outside code interacts with it.**
+- JavaScript supports this with mechanisms such as **private fields (`#`)**,
+  methods, and controlled interfaces.
