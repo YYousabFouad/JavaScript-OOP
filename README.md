@@ -30,6 +30,9 @@ A comprehensive, concept-first guide to understanding Object-Oriented Programmin
 8. **[07 - ES6 Classes](07-ES6%20Classes.md)**  
    Modern class syntax: `constructor()`, method definitions on prototypes, class fields, `extends` & `super()`, `static` methods, and how `class` maps to prototype delegation under the hood.
 
+9. **[08 - Setters and Getters](08-Setters%20and%20Getters.md)**  
+   Controlled property access: using `get` and `set`, property access syntax vs. method calls, input validation, and protecting internal object state.
+
 ---
 
 ## 🏛️ The Four Pillars of OOP
