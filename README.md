@@ -27,6 +27,9 @@ A comprehensive, concept-first guide to understanding Object-Oriented Programmin
 7. **[06 - Constructor Function and The `new` Operator](06-Constructor%20Function%20and%20The%20new%20operator.md)**  
    Classic pre-ES6 object creation: how constructor functions work, the exact 4-step mechanics of the `new` keyword, setting up `this`, and wiring prototype delegation.
 
+8. **[07 - ES6 Classes](07-ES6%20Classes.md)**  
+   Modern class syntax: `constructor()`, method definitions on prototypes, class fields, `extends` & `super()`, `static` methods, and how `class` maps to prototype delegation under the hood.
+
 ---
 
 ## 🏛️ The Four Pillars of OOP
