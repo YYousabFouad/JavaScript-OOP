@@ -33,6 +33,9 @@ A comprehensive, concept-first guide to understanding Object-Oriented Programmin
 9. **[08 - Setters and Getters](08-Setters%20and%20Getters.md)**  
    Controlled property access: using `get` and `set`, property access syntax vs. method calls, input validation, and protecting internal object state.
 
+10. **[09 - Static Methods](09-Static%20Methods.md)**  
+    Class-level behavior: methods and fields attached to the constructor/class itself rather than instances, `this` binding in static context, utility functions, and factory methods.
+
 ---
 
 ## 🏛️ The Four Pillars of OOP
