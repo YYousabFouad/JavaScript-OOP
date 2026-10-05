@@ -1,92 +1,131 @@
 # JavaScript Object-Oriented Programming (OOP)
 
-A clear, concept-first guide to understanding Object-Oriented Programming (OOP)
-in JavaScript.
-
-This folder breaks down OOP fundamentals, the four core pillars, and how
-JavaScript implements OOP under the hood using prototypes and delegation.
+A comprehensive, concept-first guide to understanding Object-Oriented Programming (OOP) in JavaScript — from core OOP pillars to JavaScript's prototype delegation model and constructor functions under the hood.
 
 ---
 
-## Table of Contents
+## 📚 Table of Contents
 
-1. **[What is OOP?](00-What%20is%20OOP.md)**  
-   Introduction to OOP, classes vs. objects, and communication interfaces
-   (APIs).
+1. **[00 - What is OOP?](00-What%20is%20OOP.md)**  
+   Introduction to OOP, state (data) and behavior (methods), procedural vs. OOP, classes vs. objects, and communication interfaces (APIs).
 
-2. **[Encapsulation](01-Encapsulation.md)**  
-   Bundling data & behavior, private fields (`#`), and controlled boundaries.
+2. **[01 - Encapsulation](01-Encapsulation.md)**  
+   Bundling data and methods together, protecting internal state, private class fields (`#`), and maintaining clear object boundaries.
 
-3. **[Abstraction](02-Abstraction.md)**  
-   Hiding internal complexity and exposing clean public interfaces.
+3. **[02 - Abstraction](02-Abstraction.md)**  
+   Hiding complex internal implementation details and exposing a clean, high-level public interface to callers.
 
-4. **[Inheritance](03-Inheritance.md)**  
-   Sharing and extending behavior using `extends` and `super()`.
+4. **[03 - Inheritance](03-Inheritance.md)**  
+   Deriving child classes from parent classes to share and specialize behavior using `extends` and `super()`.
 
-5. **[Polymorphism](04-%20Polymorphism.md)**  
-   "One interface, different behaviors" through method overriding.
+5. **[04 - Polymorphism](04-%20Polymorphism.md)**  
+   "One interface, many forms" — implementing and overriding common method interfaces across different subclasses.
 
-6. **[Prototypal Inheritance](05-%20Prototypal%20Inheritance%20%28Prototype%20Delegation%29.md)**  
-   The prototype chain, property shadowing, and object delegation.
+6. **[05 - Prototype Property & Prototypal Inheritance](05-%20Prototype%20Property.md)**  
+   Deep dive into prototypes: prototype delegation, the prototype chain, `prototype` vs. `__proto__`, property shadowing, built-in prototypes (`Object.prototype`, `Array.prototype`), and memory optimization.
+
+7. **[06 - Constructor Function and The `new` Operator](06-Constructor%20Function%20and%20The%20new%20operator.md)**  
+   Classic pre-ES6 object creation: how constructor functions work, the exact 4-step mechanics of the `new` keyword, setting up `this`, and wiring prototype delegation.
 
 ---
 
-## Core Pillars at a Glance
+## 🏛️ The Four Pillars of OOP
 
 ### 1. Encapsulation
 
-Keep an object's internal state protected and only allow interaction through
-defined methods.
+Keep an object's internal state safe from direct outside manipulation. Expose only explicit methods that validate and protect state.
 
 ```javascript
-class Account {
+class BankAccount {
   #balance = 0;
 
   deposit(amount) {
-    this.#balance += amount;
+    if (amount > 0) this.#balance += amount;
+  }
+
+  getBalance() {
+    return this.#balance;
   }
 }
 ```
 
 ### 2. Abstraction
 
-Hide implementation details and expose only what the consumer needs to know.
+Hide complex internal operations behind simple, self-explanatory method names. Consumers interact with what the object does, not how it does it.
 
 ```javascript
-// Callers use a simple method without needing to know internal logic
-user.login();
+// Caller doesn't need to know about hashing, salts, or database queries
+user.login(credentials);
 ```
 
 ### 3. Inheritance
 
-Derive a child class from a parent class to share and specialize behavior.
+Reuse code and establish hierarchical relationships where specialized child classes inherit capabilities from general parent classes.
 
 ```javascript
-class Student extends Person {
-  study() {
-    console.log("Studying...");
+class User {
+  constructor(name) {
+    this.name = name;
+  }
+
+  logout() {
+    console.log(`${this.name} logged out.`);
+  }
+}
+
+class Admin extends User {
+  deleteDatabase() {
+    console.log("Database deleted.");
   }
 }
 ```
 
 ### 4. Polymorphism
 
-Different classes can respond to the exact same method in their own unique way.
+Different objects can implement the same method interface in distinct, specialized ways.
 
 ```javascript
-dog.speak(); // "Woof!"
-cat.speak(); // "Meow!"
+class Dog {
+  speak() {
+    return "Woof!";
+  }
+}
+
+class Cat {
+  speak() {
+    return "Meow!";
+  }
+}
+
+function playSound(animal) {
+  console.log(animal.speak());
+}
 ```
 
 ---
 
-## JavaScript Mental Model: Delegation, Not Copying
+## ⚙️ JavaScript Under the Hood: Delegation, Not Copying
 
-Unlike class-based languages (such as Java or C++), JavaScript uses
-**prototypal inheritance**:
+Unlike classical class-based languages (like Java or C++), JavaScript implements OOP through **prototypes and delegation**:
 
-- Objects do not copy properties from parent classes.
-- When an object doesn't own a property, JavaScript **delegates** the lookup up
-  the **prototype chain**.
-- `class` syntax in modern JavaScript is ergonomic syntax built on top of this
-  prototype delegation model.
+```text
+[instance]  ──(__proto__)──>  [Constructor.prototype]  ──(__proto__)──>  [Object.prototype]  ──>  null
+```
+
+### Key Concepts
+
+| Concept | Explanation |
+| :--- | :--- |
+| **Prototype Delegation** | When accessing `obj.prop`, if `obj` doesn't have it, JavaScript searches its prototype link (`__proto__`) rather than copying properties onto every instance. |
+| **`Constructor.prototype`** | An object blueprint attached to a function/class where shared methods are defined once in memory. |
+| **`instance.__proto__`** | An internal reference on every object pointing to the prototype object it delegates to. |
+| **The `new` Operator** | Creates a blank object, sets its `__proto__` to the constructor's `prototype`, binds `this`, and returns the newly created object. |
+| **ES6 `class` Syntax** | Clean, declarative syntactic sugar over constructor functions and prototype delegation — the underlying engine remains prototypal. |
+
+---
+
+## 💡 Quick Rules of Thumb
+
+- **Put instance-specific state in the constructor** (`this.name = name`).
+- **Put shared methods on the prototype** (`User.prototype.login = ...` or inside the `class` body) so all instances share a single function reference in memory.
+- **Never mutate `Object.prototype` directly** in production code.

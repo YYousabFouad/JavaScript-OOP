@@ -1,10 +1,12 @@
-# 1. What is a prototype?
+# Prototype Property and Prototypal Inheritance
+
+## 1. What is a prototype?
 
 In JavaScript, a **prototype is simply another object** that an object can delegate property and method lookup to.
 
 Think:
 
-```
+```text
 object A
    ↓
 object B
@@ -22,7 +24,7 @@ If JavaScript looks for something inside `A`:
 4. Continue through the chain.
 5. Stop at `null`.
 
-That searching process is the **prototype chain**. 05- Prototypal Inheritance (Pro…
+That searching process is the **prototype chain**.
 
 ### Very important idea
 
@@ -30,7 +32,7 @@ A prototype is **not a copy** of the object.
 
 It's a relationship:
 
-```
+```text
 admin
   ↓
  user
@@ -40,13 +42,13 @@ Meaning:
 
 > "If I don't have this property, look in `user`."
 
-Your notes emphasize that `Object.create(user)` does **not copy** `user.name` into `admin`; it creates a prototype relationship. 05- Prototypal Inheritance (Pro…
+`Object.create(user)` does **not copy** `user.name` into `admin`; it creates a prototype relationship.
 
 ---
 
-# 2. A simple example
+## 2. A simple example
 
-```
+```javascript
 const user = {
   name: "John"
 };
@@ -58,7 +60,7 @@ admin.role = "admin";
 
 We can visualize it as:
 
-```
+```text
         admin
      ┌───────────┐
      │ role      │ → "admin"
@@ -74,7 +76,7 @@ We can visualize it as:
 
 Now:
 
-```
+```javascript
 admin.role
 ```
 
@@ -82,7 +84,7 @@ JavaScript finds `role` directly inside `admin`.
 
 But:
 
-```
+```javascript
 admin.name
 ```
 
@@ -90,7 +92,7 @@ There is no `name` in `admin`.
 
 So JavaScript goes:
 
-```
+```text
 admin
   ↓
 user
@@ -98,17 +100,17 @@ user
 
 and finds `name`.
 
-That's **prototype delegation**. 05- Prototypal Inheritance (Pro…
+That's **prototype delegation**.
 
 ---
 
-# 3. Prototype delegation
+## 3. Prototype delegation
 
 This is the most important concept.
 
 Suppose:
 
-```
+```javascript
 const user = {
   name: "John"
 };
@@ -118,13 +120,13 @@ const admin = Object.create(user);
 
 When you do:
 
-```
+```javascript
 admin.name
 ```
 
 JavaScript effectively searches:
 
-```
+```text
 Does admin have "name"?
         ↓
        NO
@@ -146,13 +148,13 @@ So you can mentally think:
 
 ---
 
-# 4. What is the prototype chain?
+## 4. What is the prototype chain?
 
 The chain is simply the sequence of prototype relationships JavaScript follows.
 
 For example:
 
-```
+```text
 object
   ↓
 prototype
@@ -166,7 +168,7 @@ null
 
 Suppose:
 
-```
+```javascript
 const grandParent = {
   species: "human"
 };
@@ -178,7 +180,7 @@ const child = Object.create(parent);
 
 The relationship is:
 
-```
+```text
 child
   ↓
 parent
@@ -192,13 +194,13 @@ null
 
 If you ask:
 
-```
+```javascript
 child.species
 ```
 
 JavaScript searches:
 
-```
+```text
 child
  ↓
 parent
@@ -210,11 +212,11 @@ grandParent
 
 It stops as soon as it finds the property.
 
-This is exactly the lookup process described in your file. 05- Prototypal Inheritance (Pro…
+This is the prototype lookup process.
 
 ---
 
-# 5. What is `prototype`?
+## 5. What is `prototype`?
 
 Now we get to one of the confusing parts.
 
@@ -222,7 +224,7 @@ Now we get to one of the confusing parts.
 
 For example:
 
-```
+```javascript
 function User(name) {
   this.name = name;
 }
@@ -230,7 +232,7 @@ function User(name) {
 
 The function `User` has a property called:
 
-```
+```javascript
 User.prototype
 ```
 
@@ -238,7 +240,7 @@ That object can contain methods that instances of `User` can access.
 
 For example:
 
-```
+```javascript
 User.prototype.greet = function () {
   console.log("Hello");
 };
@@ -246,14 +248,14 @@ User.prototype.greet = function () {
 
 Then objects created with:
 
-```
+```javascript
 const user1 = new User("John");
 const user2 = new User("Mike");
 ```
 
 can access:
 
-```
+```javascript
 user1.greet();
 user2.greet();
 ```
@@ -262,7 +264,7 @@ even though `greet` isn't directly stored inside `user1` or `user2`.
 
 Conceptually:
 
-```
+```text
 user1 ──────┐
             │
 user2 ──────┼──→ User.prototype
@@ -271,17 +273,17 @@ user3 ──────┘          ↓
                      greet()
 ```
 
-This is the shared-method idea described in your notes. 05- Prototypal Inheritance (Pro…
+This allows all instances to share a single method definition in memory.
 
 ---
 
-# 6. Then what is `__proto__`?
+## 6. Then what is `__proto__`?
 
 This is where beginners commonly get confused.
 
 `__proto__` and `prototype` are **not the same thing**.
 
-### `prototype`
+### The `prototype` Property
 
 Usually think:
 
@@ -289,11 +291,11 @@ Usually think:
 
 Example:
 
-```
+```javascript
 User.prototype
 ```
 
-### `__proto__`
+### The `__proto__` Accessor
 
 Think:
 
@@ -301,13 +303,13 @@ Think:
 
 Example:
 
-```
+```javascript
 user1.__proto__
 ```
 
 So:
 
-```
+```text
 User function
      │
      │ .prototype
@@ -321,27 +323,27 @@ User.prototype
 
 More specifically:
 
-```
+```javascript
 user1.__proto__ === User.prototype
 ```
 
 is `true` for an object created with:
 
-```
+```javascript
 const user1 = new User();
 ```
 
 ---
 
-# 7. The easiest way to remember them
+## 7. The easiest way to remember them
 
 Think about the **direction**.
 
-### `prototype`
+### Direction: From Constructor (`prototype`)
 
 Starts from the constructor:
 
-```
+```text
 User
  ↓
 .prototype
@@ -349,11 +351,11 @@ User
 object used as prototype
 ```
 
-### `__proto__`
+### Direction: From Object (`__proto__`)
 
 Starts from an object:
 
-```
+```text
 user1
  ↓
 .__proto__
@@ -363,13 +365,13 @@ its prototype
 
 So:
 
-```
+```javascript
 User.prototype
 ```
 
 and:
 
-```
+```javascript
 user1.__proto__
 ```
 
@@ -377,7 +379,7 @@ can point to the **same object**, but they are accessed from different places.
 
 ---
 
-# 8. `prototype` vs `__proto__`
+## 8. `prototype` vs `__proto__`
 
 ||`prototype`|`__proto__`|
 |---|---|---|
@@ -388,7 +390,7 @@ can point to the **same object**, but they are accessed from different places.
 
 One important modern-JS note: `__proto__` is a legacy accessor. For code, prefer:
 
-```
+```javascript
 Object.getPrototypeOf(object)
 ```
 
@@ -396,7 +398,7 @@ instead of relying on `__proto__`.
 
 For example:
 
-```
+```javascript
 Object.getPrototypeOf(user1)
 ```
 
@@ -404,13 +406,13 @@ gets the same prototype relationship in a standard API.
 
 ---
 
-# 9. How `new` connects everything
+## 9. How `new` connects everything
 
-You recently learned constructor functions and `new`, so this is the missing connection.
+Constructor functions and `new` establish this connection.
 
 Suppose:
 
-```
+```javascript
 function User(name) {
   this.name = name;
 }
@@ -422,13 +424,13 @@ User.prototype.greet = function () {
 
 Then:
 
-```
+```javascript
 const user1 = new User("John");
 ```
 
 Conceptually, `new` establishes this relationship:
 
-```
+```text
              User
               │
               │ .prototype
@@ -442,21 +444,21 @@ Conceptually, `new` establishes this relationship:
 
 So:
 
-```
+```javascript
 user1.greet();
 ```
 
 works because JavaScript can't find `greet` directly on `user1`, so it searches its prototype.
 
-Your notes make the same connection with `class`: JavaScript classes still use the prototype mechanism underneath. 05- Prototypal Inheritance (Pro…
+ES6 classes also use this same prototype mechanism underneath.
 
 ---
 
-# 10. Why don't we put methods directly on every object?
+## 10. Why don't we put methods directly on every object?
 
 Imagine:
 
-```
+```javascript
 const user1 = {
   name: "John",
   greet: function () {
@@ -476,7 +478,7 @@ Now we have two separate `greet` functions.
 
 With prototypes, we can have:
 
-```
+```text
 user1 ──┐
         │
 user2 ──┼──→ User.prototype
@@ -487,17 +489,17 @@ user3 ──┘          ↓
 
 All users can delegate to the **same method**.
 
-That's one major reason prototypes are useful. 05- Prototypal Inheritance (Pro…
+That's one major reason prototypes are useful.
 
 ---
 
-# 11. Property shadowing
+## 11. Property shadowing
 
 Another important prototype concept is **shadowing**.
 
 Suppose:
 
-```
+```javascript
 const user = {
   name: "John"
 };
@@ -507,13 +509,13 @@ const admin = Object.create(user);
 
 Initially:
 
-```
+```javascript
 admin.name
 ```
 
 gives:
 
-```
+```text
 "John"
 ```
 
@@ -521,25 +523,25 @@ because it comes from the prototype.
 
 But now:
 
-```
+```javascript
 admin.name = "Mike";
 ```
 
 Now:
 
-```
+```javascript
 admin.name
 ```
 
 gives:
 
-```
+```text
 "Mike"
 ```
 
 because JavaScript finds `name` directly on `admin`.
 
-```
+```text
 admin
  ├── name: "Mike"  ← found first
  │
@@ -548,11 +550,11 @@ user
  └── name: "John"
 ```
 
-The `admin.name` **shadows** `user.name`. 05- Prototypal Inheritance (Pro…
+The `admin.name` **shadows** `user.name`.
 
 ---
 
-# 12. What is prototypal inheritance?
+## 12. What is prototypal inheritance?
 
 Now we can define it properly.
 
@@ -560,7 +562,7 @@ Now we can define it properly.
 
 For example:
 
-```
+```text
 admin
   ↓
 user
@@ -568,9 +570,9 @@ user
 
 `admin` can access properties from `user` through delegation.
 
-This is why your notes describe JavaScript's underlying inheritance model as:
+This is why JavaScript's underlying inheritance model is:
 
-```
+```text
 object
   ↓
 object
@@ -578,13 +580,11 @@ object
 
 rather than primarily:
 
-```
+```text
 class
   ↓
 class
 ```
-
-05- Prototypal Inheritance (Pro…
 
 ### Important distinction
 
@@ -594,13 +594,13 @@ When people say:
 
 don't imagine:
 
-```
+```text
 copy user properties → admin
 ```
 
 Instead think:
 
-```
+```text
 admin
   ↓
 user
@@ -614,7 +614,7 @@ That's why **delegation** is such a useful mental model.
 
 ---
 
-# 13. Prototypal inheritance vs prototype chain
+## 13. Prototypal inheritance vs prototype chain
 
 These two terms are related but describe different things.
 
@@ -622,7 +622,7 @@ These two terms are related but describe different things.
 
 The **mechanism/relationship**:
 
-```
+```text
 admin → user
 ```
 
@@ -632,7 +632,7 @@ Admin can access things from user through the prototype relationship.
 
 The **whole path** JavaScript follows:
 
-```
+```text
 admin
   ↓
 user
@@ -644,13 +644,12 @@ null
 
 So:
 
-> **Prototypal inheritance is the behavior.**
-
+> **Prototypal inheritance is the behavior.**  
 > **The prototype chain is the path used to perform that behavior.**
 
 ---
 
-# 14. Built-in objects also use prototypes
+## 14. Built-in objects also use prototypes
 
 This is extremely important.
 
@@ -658,13 +657,13 @@ You have already been using prototypes without necessarily realizing it.
 
 For example:
 
-```
+```javascript
 const arr = [1, 2, 3];
 ```
 
 `arr` can do:
 
-```
+```javascript
 arr.push(4);
 arr.map(...);
 arr.includes(2);
@@ -676,7 +675,7 @@ Where do they come from?
 
 Conceptually:
 
-```
+```text
 arr
  ↓
 Array.prototype
@@ -688,13 +687,13 @@ null
 
 So when JavaScript sees:
 
-```
+```javascript
 arr.push
 ```
 
 it searches:
 
-```
+```text
 Does arr have push?
        ↓
       NO
@@ -706,13 +705,13 @@ Does Array.prototype have push?
 
 ---
 
-# 15. Other built-in objects
+## 15. Other built-in objects
 
 The same idea applies to many built-ins.
 
 ### Array
 
-```
+```text
 myArray
    ↓
 Array.prototype
@@ -724,7 +723,7 @@ null
 
 So methods like:
 
-```
+```javascript
 push()
 map()
 filter()
@@ -737,20 +736,20 @@ come through the prototype system.
 
 ### String
 
-```
+```javascript
 const name = "John";
 ```
 
 You can do:
 
-```
+```javascript
 name.toUpperCase();
 name.includes("J");
 ```
 
 Conceptually:
 
-```
+```text
 string value
     ↓
 String.prototype
@@ -764,13 +763,13 @@ null
 
 ### Date
 
-```
+```javascript
 const date = new Date();
 ```
 
 Conceptually:
 
-```
+```text
 date
  ↓
 Date.prototype
@@ -788,7 +787,7 @@ Functions are objects too.
 
 For example:
 
-```
+```javascript
 function greet() {}
 ```
 
@@ -798,17 +797,17 @@ This is one reason JavaScript's prototype system can initially feel confusing: *
 
 ---
 
-# 16. `Object.prototype`
+## 16. `Object.prototype`
 
 At the top of many ordinary object prototype chains you'll find:
 
-```
+```javascript
 Object.prototype
 ```
 
 For example:
 
-```
+```javascript
 const user = {
   name: "John"
 };
@@ -816,7 +815,7 @@ const user = {
 
 Conceptually:
 
-```
+```text
 user
  ↓
 Object.prototype
@@ -826,7 +825,7 @@ null
 
 That's why ordinary objects can access methods such as:
 
-```
+```javascript
 user.toString()
 ```
 
@@ -836,11 +835,11 @@ JavaScript searches the prototype chain.
 
 ---
 
-# 17. One big picture
+## 17. One big picture
 
 Put everything together:
 
-```
+```text
                      Constructor
                          │
                          │ .prototype
@@ -866,7 +865,7 @@ Put everything together:
 
 And the important vocabulary:
 
-```
+```text
 prototype
    ↓
 an object used as another object's prototype
@@ -890,11 +889,11 @@ legacy accessor for an object's prototype
 
 ---
 
-# 18. How `class` fits into all of this
+## 18. How `class` fits into all of this
 
 When you write:
 
-```
+```javascript
 class User {
   greet() {
     console.log("Hello");
@@ -908,7 +907,7 @@ But underneath, JavaScript still uses prototypes.
 
 Conceptually:
 
-```
+```text
 user1 ──┐
         │
 user2 ──┼──→ User.prototype
@@ -919,7 +918,7 @@ user3 ──┘         ↓
 
 So:
 
-```
+```javascript
 user1.greet();
 ```
 
@@ -929,17 +928,17 @@ That's why the statement:
 
 > **"JavaScript classes are built on top of prototypes."**
 
-is important. Your uploaded notes make this exact connection. 05- Prototypal Inheritance (Pro…
+is fundamental.
 
 ---
 
-# 19. The mental model I want you to keep
+## 19. The mental model I want you to keep
 
 Don't memorize dozens of definitions.
 
 Think about **lookup**:
 
-```
+```text
              property lookup
                     │
                     ↓
@@ -967,7 +966,7 @@ That's the heart of the entire topic.
 
 When you see:
 
-```
+```javascript
 user.greet()
 ```
 
@@ -977,7 +976,7 @@ ask yourself:
 
 It might be:
 
-```
+```text
 user
  ↓
 User.prototype
